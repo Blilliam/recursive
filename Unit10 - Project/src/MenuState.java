@@ -1,9 +1,7 @@
 
-
 import java.awt.Graphics2D;
 
-
-public class MenuState extends State{
+public class MenuState extends State {
 
 	public MenuState(GameObject gameObj) {
 		super(gameObj);
@@ -21,7 +19,7 @@ public class MenuState extends State{
 	public void update() {
 		gameObj.getStartButton().update();
 		gameObj.getControlButton().update();
-		
+
 	}
 
 }

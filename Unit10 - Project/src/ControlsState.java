@@ -1,53 +1,85 @@
-
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
+/**
+ * ControlsState manages the UI overlay that displays keybindings and
+ * interaction instructions to the user.
+ */
 public class ControlsState extends State {
 
+	/**
+	 * Constructor: Initializes the state with a reference to the parent GameObject.
+	 * 
+	 * @param gameObj The central engine manager.
+	 */
 	public ControlsState(GameObject gameObj) {
 		super(gameObj);
-		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Renders the controls menu, including a background overlay and dynamic text
+	 * alignment.
+	 * 
+	 * @param g2 The Graphics2D context for high-quality rendering.
+	 */
 	@Override
 	public void draw(Graphics2D g2) {
 
-		// background
-		g2.setColor(new Color(30, 30, 80, 200)); // dark blue overlay
+		// 1. Render semi-transparent background overlay
+		g2.setColor(new Color(30, 30, 80, 200));
 		g2.fillRect(0, 0, AppPanel.WIDTH, AppPanel.HEIGHT);
 
-		// text settings
-		g2.setColor(Color.BLACK);
-		g2.setFont(new Font("Malgun Gothic", Font.PLAIN, 30));
+		// 2. Configure typography and font metrics for centering
+		g2.setColor(Color.WHITE);
+		g2.setFont(new Font("Malgun Gothic", Font.BOLD, 35));
 		FontMetrics fm = g2.getFontMetrics();
 
-		String s1 = "Up: W";
-		String s2 = "Down: S";
-		String s3 = "Left: A";
-		String s4 = "Right: D";
+		// Populate instruction set
+		ArrayList<String> str = new ArrayList<String>();
+		str.add("Up: W");
+		str.add("Down: S");
+		str.add("Left: A");
+		str.add("Right: D");
+		str.add("Zoom In: Left Click");
+		str.add("Auto Zoom: Right Click");
+		str.add("Zoom Speed: Side Bar");
 
-		int x1 = (AppPanel.WIDTH - fm.stringWidth(s1)) / 2;
-		int x2 = (AppPanel.WIDTH - fm.stringWidth(s2)) / 2;
-		int x3 = (AppPanel.WIDTH - fm.stringWidth(s3)) / 2;
-		int x4 = (AppPanel.WIDTH - fm.stringWidth(s4)) / 2;
+		// 3. Iterative rendering with center-aligned horizontal positioning
+		int startY = AppPanel.HEIGHT / 2 - ((str.size() * 80) / 2);
 
-		// actually drawing the controls
-		g2.drawString(s1, x1, AppPanel.HEIGHT / 2 - 100);
-		g2.drawString(s2, x2, AppPanel.HEIGHT / 2 - 70);
-		g2.drawString(s3, x3, AppPanel.HEIGHT / 2 - 40);
-		g2.drawString(s4, x4, AppPanel.HEIGHT / 2 - 10);
-		
-		gameObj.getExitControlButton().draw(g2);
+		for (int i = 0; i < str.size(); i++) {
+			String text = str.get(i);
 
+			// Calculate x-coordinate for center alignment
+			int x = (AppPanel.WIDTH / 2) - (fm.stringWidth(text) / 2);
+			int y = startY + (i * 60);
+
+			// Render drop shadow for legibility
+			g2.setColor(Color.BLACK);
+			g2.drawString(text, x + 2, y + 2);
+
+			// Render primary text
+			g2.setColor(Color.WHITE);
+			g2.drawString(text, x, y);
+		}
+
+		// 4. Delegate rendering to navigation button
+		if (gameObj.getExitControlButton() != null) {
+			gameObj.getExitControlButton().draw(g2);
+		}
 	}
 
+	/**
+	 * Updates the state-specific logic, primarily monitoring navigation button
+	 * interactions.
+	 */
 	@Override
 	public void update() {
-		gameObj.getExitControlButton().update(); // for going back
-
+		if (gameObj.getExitControlButton() != null) {
+			gameObj.getExitControlButton().update();
+		}
 	}
-
 }
