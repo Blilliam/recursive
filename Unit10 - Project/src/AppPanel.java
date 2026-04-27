@@ -1,4 +1,4 @@
-package main;
+
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -11,21 +11,20 @@ import javax.swing.JPanel;
 
 public class AppPanel extends JPanel implements Runnable {
 	static Toolkit tk = Toolkit.getDefaultToolkit();
-	
-	public static final int WIDTH = ((int) tk.getScreenSize().getWidth()); // sets width to screen width
-	public static final int HEIGHT = ((int)tk.getScreenSize().getHeight()) - 38; // sets height to screen height
+	//1024 × 768
+	public static final int WIDTH = 1024; // or ((int) tk.getScreenSize().getWidth()); // sets width to screen width
+	public static final int HEIGHT = 768; // or ((int)tk.getScreenSize().getHeight()) - 38; // sets height to screen height
 	public Dimension d = new Dimension(WIDTH, HEIGHT); //creates dementions with screen dimentions
 	
 	public Thread t = new Thread(this); 
 	
 	MouseInput mouseHandler = new MouseInput(); //mouse input
 	
-	GameObject gameObj = new GameObject(keyH, mouseHandler); // creates game object and passes teh inputs
+	GameObject gameObj = new GameObject(mouseHandler); // creates game object and passes teh inputs
 	
 	// Constructor
 	public AppPanel() {
 		setPreferredSize(d); // sets preffered panel size
-		addKeyListener(keyH); // records key clicks
 		setFocusable(true); // alows you to zoom in 
         addMouseListener(mouseHandler); // listens for mouse clicks
         addMouseMotionListener(mouseHandler); // listens for mouse movement
